@@ -3,6 +3,8 @@ using DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+// this namespace allows us to use Include
+using System.Data.Entity;
 
 namespace ConsoleApp
 {
@@ -17,10 +19,51 @@ namespace ConsoleApp
             // SimpleNinjaQueries();
             // QueryAndUpdateNinja();
             // QueryAndUpdateNinjaDisconnectedApp();
-            // RetrieveDataWithFind();
-            RetrieveDataWithStoredProc();
+             RetrieveDataWithFind();
+            // RetrieveDataWithStoredProc();
+            // DeleteNinja();
+            // AddNinjaWithEquipment();
             Console.WriteLine("Press key to close");
             Console.ReadKey();
+        }
+
+        private static void AddNinjaWithEquipment()
+        {
+            var ninja = new Ninja
+            {
+                Name = "Naruto",
+                ClanId = 1,
+                DateOfBirth = new DateTime(1996,3,5),
+                ServedInOniwaban = false
+            };
+            var muscles = new NinjaEquipment
+            {
+                Name = "Muscles",
+                Type = Classes.Enums.EquipmentType.Tool
+            };
+            var spunk = new NinjaEquipment
+            {
+                Name = "Spunk",
+                Type = Classes.Enums.EquipmentType.Weapon
+            };
+            using (var context = new NinjaContext())
+            {
+                context.Ninjas.Add(ninja);
+                ninja.EquipmentOwned.Add(muscles);
+                ninja.EquipmentOwned.Add(spunk);
+                context.SaveChanges();
+            }
+        }
+
+        private static void DeleteNinja()
+        {
+            using (var context = new NinjaContext())
+            {
+                // we can again use State property to set it to 'Deleted'
+                var ninja = context.Ninjas.FirstOrDefault();
+                context.Ninjas.Remove(ninja);
+                context.SaveChanges();
+            }
         }
 
         private static void RetrieveDataWithStoredProc()
@@ -35,15 +78,28 @@ namespace ConsoleApp
 
         private static void RetrieveDataWithFind()
         {
-            var id = 4;
+            var id = 6;
             using (var context = new NinjaContext())
             {
                 // Find first checks local memory for specified argument, if it's not
                 // found, it will then call DB and execute itself as SingleOrDefault.
-                // Difference between find and SOD is that find doesn't return
-                // referenced data, in this case, he will ony return data from ninja table
-                var ninja = context.Ninjas.Find(id);
-                ninja = context.Ninjas.SingleOrDefault(x => x.Id == id);
+                // Difference between find and SOD is that Find can't use Include, u can't return
+                // referenced data, in this case, he will ony return data from ninja table, 
+                var ninja1 = context.Ninjas.Find(id);
+
+                // This is eager loading, we load everything at start
+                var ninja2 = context.Ninjas.Include(x => x.EquipmentOwned).SingleOrDefault(x => x.Id == id);
+                Console.WriteLine($"Equipment: {ninja2.EquipmentOwned.FirstOrDefault().Name}");
+
+                // if we don't want to load referenced list data for all entities at once, we can later load it
+                // This is explicit loading, we load what we want
+                var ninja3 = context.Ninjas.SingleOrDefault(x => x.Id == id);
+                context.Entry(ninja3).Collection(x => x.EquipmentOwned).Load();
+
+                // I can enable lazy loading by defining VIRTUAL inside Ninja model, on EquipmentOwned property
+                // By doing that, I am enabling loading additional data when I need it
+                // I didn't specify VIRTUAL so this wont work now
+                Console.WriteLine("Equipment count" + ninja1.EquipmentOwned.Count);
             }
         }
 
