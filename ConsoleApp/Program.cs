@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 // this namespace allows us to use Include
 using System.Data.Entity;
+using Model;
 
 namespace ConsoleApp
 {
@@ -19,12 +20,23 @@ namespace ConsoleApp
             // SimpleNinjaQueries();
             // QueryAndUpdateNinja();
             // QueryAndUpdateNinjaDisconnectedApp();
-             RetrieveDataWithFind();
+            // RetrieveDataWithFind();
             // RetrieveDataWithStoredProc();
             // DeleteNinja();
             // AddNinjaWithEquipment();
+            GetDataWithoutTracking();
             Console.WriteLine("Press key to close");
             Console.ReadKey();
+        }
+
+        private static void GetDataWithoutTracking()
+        {
+            using (var context = new NinjaContext())
+            {
+                // As no tracking is storing data into memory, so if I wanted to update
+                // ninja, I couldn't do it directly as 'ninja.Name = ...'
+                var ninja = context.Ninjas.AsNoTracking().FirstOrDefaultAsync();
+            }
         }
 
         private static void AddNinjaWithEquipment()

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataHelpers.cs" />
     <Compile Include="Migrations\202004151557353_InitialMigration.cs" />
     <Compile Include="Migrations\202004151557353_InitialMigration.designer.cs">
       <DependentUpon>202004151557353_InitialMigration.cs</DependentUpon>
@@ -58,6 +59,10 @@
     <Compile Include="Migrations\202004151605106_AddedDateOfBirth.cs" />
     <Compile Include="Migrations\202004151605106_AddedDateOfBirth.designer.cs">
       <DependentUpon>202004151605106_AddedDateOfBirth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004171727010_AddedUpdateHistory.cs" />
+    <Compile Include="Migrations\202004171727010_AddedUpdateHistory.designer.cs">
+      <DependentUpon>202004171727010_AddedUpdateHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NinjaContext.cs" />
@@ -79,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004151605106_AddedDateOfBirth.resx">
       <DependentUpon>202004151605106_AddedDateOfBirth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004171727010_AddedUpdateHistory.resx">
+      <DependentUpon>202004171727010_AddedUpdateHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
