@@ -96,7 +96,9 @@ namespace ConsoleApp
                 // Find first checks local memory for specified argument, if it's not
                 // found, it will then call DB and execute itself as SingleOrDefault.
                 // Difference between find and SOD is that Find can't use Include, u can't return
-                // referenced data, in this case, he will ony return data from ninja table, 
+                // referenced data, in this case, he will ony return data from ninja table
+                // U don't have to specify key to find method, EF has that logic, so in some cases
+                // this is performance hit
                 var ninja1 = context.Ninjas.Find(id);
 
                 // This is eager loading, we load everything at start

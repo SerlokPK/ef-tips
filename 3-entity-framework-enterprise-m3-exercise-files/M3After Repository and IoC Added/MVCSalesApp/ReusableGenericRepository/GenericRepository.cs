@@ -28,6 +28,8 @@ namespace DisconnectedGenericRepository
     }
 
     public TEntity FindByKey(int id) {
+      // We can build lambda expression, only thing we need to keep in mind is that all Id 
+      // parameters should have postfix 'Id'
       Expression<Func<TEntity, bool>> lambda = Utilities.BuildLambdaForFindByKey<TEntity>(id);
       return _dbSet.AsNoTracking().SingleOrDefault(lambda);
     }
