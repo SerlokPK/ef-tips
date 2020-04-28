@@ -20,5 +20,7 @@ namespace Model
         public DateTime DateModified { get; set; }
         public DateTime DateCreated { get; set; }
         public bool IsDirty { get; set; }
+        // if we want 1:1 relationship or 1:0..1 we need to have navigation properties on both ends
+        // and in dependent entity primary key is also a foreign key
     }
 }

@@ -17,6 +17,10 @@ namespace DataModel
         {
             // We can ignore IsDirty property so it will not be migrated into tables
             modelBuilder.Types().Configure(c => c.Ignore("IsDirty"));
+            // If we want 1:1 relationship we need to define it explicitly (random classes)
+            // modelBuilder.Entity<Customer>()
+            //            .HasOptional(n => n.ContactDetail)
+            //            .WithRequired(n => n.Customer)
             base.OnModelCreating(modelBuilder);
         }
 
